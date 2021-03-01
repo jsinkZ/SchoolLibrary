@@ -1,0 +1,13 @@
+﻿@{
+    Layout = null;
+}
+<input type="checkbox" id="nav-toggle" hidden>
+<div class="nav">
+    <label for="nav-toggle" class="nav-toggle" title="Меню личного кабинета"></label>
+    <h2 class="logo">@ViewBag.PrivatePerson</h2>
+    <ul>
+        <li>@Html.ActionLink("Руководители", "Tutors", "Home")</li>
+        <li>@Html.ActionLink("Участники", "Challengers", "Home")</li>
+        <li>@Html.ActionLink("Команды", "Teams", "Home")</li>
+    </ul>
+</div>

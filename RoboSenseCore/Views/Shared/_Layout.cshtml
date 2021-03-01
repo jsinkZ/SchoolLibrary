@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title – Открытый робототехнический фестиваль «RoboSense»</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" lang="ru" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name='keywords' content='«RoboSense», Интернет-конкурс, робототехнический конкурс, творческих работ школьников, робототехнический фестиваль, Электросталь, Центр «Диалог»' />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/localization/messages_ru.min.js"></script>
+    <script src="~/js/jquery.lettering.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type='date']")
+                .datepicker({ dateFormat: 'dd.mm.yyyy' })
+                .get(0).setAttribute("type", "text"); 
+            $.datepicker.regional['ru'] = {
+                prevText: 'Пред',
+                nextText: 'След',
+                monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+                    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
+                    'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                dayNames: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
+                dayNamesShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
+                dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                weekHeader: 'Не',
+                dateFormat: 'dd.mm.yyyy',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional['ru']);
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#header h1").lettering();
+        });
+    </script>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div id='header'>
+        <h1>RoboSense</h1>
+        <h4>Открытый робототехнический фестиваль</h4>
+    </div>
+    <partial name="_CookieConsentPartial" />
+    <div id='content'>
+        <div id='main'>
+            @RenderBody()
+        </div>
+        <div id='navigation'>
+            <ul id="nav">
+                <li>
+                    <a href='#' id="firstItem">О Фестивале</a>
+                    <ul class="subs">
+                        <li>@Html.ActionLink("Новости", "News", "Home")</li>
+                        <li>@Html.ActionLink("Порядок регистрации", "RegistrationHowTo", "Home")</li>
+                        <li>@Html.ActionLink("Регламенты", "Regulations", "Home")</li>
+                        <li>@Html.ActionLink("Документы", "Documents", "Home")</li>
+                        <li>@Html.ActionLink("Расписание", "Schedule", "Home")</li>
+                        <li>@Html.ActionLink("Участники", "Competitors", "Home")</li>
+                        <li>@Html.ActionLink("Личный кабинет", "Private", "Home")</li>
+                    </ul>
+                </li>
+                <li>
+                    <a href='#' id="secondItem">Номинации</a>
+                    <ul class="subs">
+                        <!--<li>@Html.ActionLink("Юниор", "Junior", "Home")</li>-->
+                        <li>@Html.ActionLink("Лучший LEGO-моделист", "Lego", "Home")</li>
+                        <li>@Html.ActionLink("Первый шаг в робототехнику", "FreeStyleJunior", "Home")</li>
+                        <li>@Html.ActionLink("Соревновательный трек", "Competitions", "Home")</li>
+                        <li>@Html.ActionLink("FreeStyle", "FreeStyle", "Home")</li>
+                        <li>@Html.ActionLink("Вначале было слово", "InitialWord", "Home")</li>
+                    </ul>
+                </li>
+                <li>@Html.ActionLink("Контакты", "Contacts", "Home", null, new { id = "thirdItem" })</li>
+                <li>@Html.ActionLink("Спонсоры", "Sponsors", "Home", null, new { id = "fourthItem" })</li>
+            </ul>
+            @{
+                if (User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("ВЫХОД", "Logout", "Account", null, new { id = "logout" })
+                }
+                else
+                {
+                    @Html.ActionLink("ВХОД", "Private", "Home", null, new { id = "logon" })
+                }
+            }
+            @RenderSection("privateNav", required: false)
+        </div>
+    </div>
+    <div id='meta'>Центр развития творчества детей и юношества «Диалог» г. Электросталь &copy; @DateTime.Now.Year</div>
+</body>
+</html>

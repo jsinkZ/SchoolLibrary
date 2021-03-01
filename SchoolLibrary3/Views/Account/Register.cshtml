@@ -1,0 +1,45 @@
+﻿@model SchoolLibrary3.ViewModels.RegisterViewModel
+@{
+    ViewBag.Title = "Регистрация нового Представителя";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@await Html.PartialAsync("~/Views/Home/PrivacyAgreement.cshtml", new SchoolLibrary3.ViewModels.Home.PrivacyViewModel(SchoolLibrary3.ViewModels.Home.AgreementType.Client))
+<form method="post" asp-controller="Account" asp-action="Register">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    @if (ViewBag.Allow)
+    {
+    <fieldset id="editorFS">
+        <legend>Регистрация нового Посетителя</legend>
+        <label>Адрес электронной почты:</label>
+        <input asp-for="Email" disabled />
+        @Html.HiddenFor(model => model.Email)
+        <label>Имя:</label>
+        @Html.EditorFor(model => model.FirstName)
+        <label>Фамилия:</label>
+        @Html.EditorFor(model => model.SecondName)
+        <label>Отчество:</label>
+        @Html.EditorFor(model => model.PatronymicName)
+        <label>Телефон:</label>
+        @Html.EditorFor(model => model.PhoneNumber)
+        <label>Пароль:</label>
+        @Html.EditorFor(model => model.Password)
+        <label>Подтвердить пароль:</label>
+        @Html.EditorFor(model => model.PasswordConfirm)
+        @Html.HiddenFor(model => model.TheToken)
+        <p>
+            @Html.CheckBox("CheckAgreement", false)<span class="agreementAlert">Я подтверждаю, что ознакомился с <label class="agreementAnchor">текстом согласия на обработку персональных данных</label> и согласен передать адрес электронной почты и телефон для обработки и хранения в информационную систему «Школьная библиотека»</span>
+        </p>
+        <input type="submit" value="Зарегистрировать" class="ColorSubmit" disabled />
+    </fieldset>
+    }
+</form>
+<script>
+    $('#CheckAgreement').change(function () {
+        if ($('input:checkbox:checked').length > 0) {
+            $('input[type="submit"]').prop('disabled', false);
+        } else {
+            $('input[type="submit"]').prop('disabled', true);
+        }
+    });
+</script>

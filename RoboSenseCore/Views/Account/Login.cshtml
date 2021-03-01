@@ -1,0 +1,19 @@
+﻿@model RoboSenseCore.ViewModels.LoginViewModel
+@{
+    ViewBag.Title = "Вход в личный кабинет представителя";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p class="rightAligned">@Html.ActionLink("Забыли пароль?", "ForgotPassword")</p>
+<h2>Вход в личный кабинет представителя</h2>
+<form method="post" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <fieldset id="editorFS">
+        <legend>Вход в личный кабинет представителя</legend>
+        <label>Email</label>
+        @Html.EditorFor(model => model.Email)
+        <label>Пароль</label>
+        @Html.EditorFor(model => model.Password)
+        <input type="submit" class="ColorSubmit" value="Войти" />
+    </fieldset>
+</form>

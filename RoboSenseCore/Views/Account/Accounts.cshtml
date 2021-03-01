@@ -1,0 +1,45 @@
+﻿@model List<RoboSenseCore.ViewModels.AccountsViewModel>
+@{
+    ViewBag.Title = "Список представителей";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p class="rightAligned">@Html.ActionLink("Добавить представителя", "PreRegister")</p>
+<fieldset id="tableFS">
+    <legend>@ViewBag.Title</legend>
+    @if (Model.Count() > 0)
+    {
+        <table>
+            <tr>
+                <th>Логин</th>
+                <th>Представляет</th>
+                <th>Почта</th>
+                <th>Тип</th>
+                <th>Телефон</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeputyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FreeDeputizing)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.ActionLink("X", "DeleteAccount", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</fieldset>

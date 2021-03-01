@@ -1,0 +1,22 @@
+﻿@model RoboSenseCore.ViewModels.PreRegisterViewModel
+@{
+    ViewBag.Title = "Создание приглашения для регистрации";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <h2>Создание приглашения для регистрации нового Представителя</h2>
+<p class="rightAligned">@Html.ActionLink("Вернуться в личный кабинет", "AdminPrivate", "Home")</p>
+<form method="post" asp-controller="Account" asp-action="PreRegister">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <fieldset id="editorFS">
+        <legend>Приглашение Представителя</legend>
+        <label>Адрес электронной почты:</label>
+        @Html.EditorFor(model => model.Email)
+        <input type="submit" value="Зарегистрировать" class="ColorSubmit" />
+    </fieldset>
+</form>
+<script>
+    $('input[type="submit"]').on('click', (e) => {
+        $('#CityId').remove(); // Чтобы submit пришёл без значения CityId
+    });
+</script>

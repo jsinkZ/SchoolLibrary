@@ -1,0 +1,37 @@
+﻿@using SchoolLibrary3.Models.Entities
+@model List<Book>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Список книг</h1>
+    <table border="1">
+        <tr>
+            <th>Название книги</th>
+            <th>Автор</th>
+            <th>Количество страниц</th>
+            <th>Издатель</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalPages)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Publisher)
+        </td>
+    </tr>
+        }
+    </table>
+</div>
+
+

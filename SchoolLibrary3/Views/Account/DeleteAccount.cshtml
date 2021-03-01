@@ -1,0 +1,16 @@
+﻿@model SchoolLibrary3.Models.User
+@{
+    ViewBag.Title = "Удаление Пользователя";
+}
+<p class="rightAligned">@Html.ActionLink("Назад к списку Пользователей", "Accounts")</p>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <fieldset id="editorFS">
+        <legend>@ViewBag.Title</legend>
+        <label>Login:</label>
+        @Html.TextBoxFor(model => model.UserName, new { @disabled = "disabled", @class = "disabledTextBox" })
+        <input type="submit" value="Удалить" class="ColorSubmit" />
+    </fieldset>
+}
