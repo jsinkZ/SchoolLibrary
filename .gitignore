@@ -7,6 +7,7 @@
 RoboSenseCore/
 SchoolLibrary3/appsettings.json
 SchoolLibrary3/appsettings
+appsettings.json
 
 # User-specific files
 *.rsuser
