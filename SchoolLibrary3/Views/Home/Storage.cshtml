@@ -2,7 +2,7 @@
 @model List<Book>
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Управление книжным фондом";
 }
 
 <div class="text-center">
@@ -13,25 +13,30 @@
             <th>Автор</th>
             <th>Количество страниц</th>
             <th>Издатель</th>
+            <th>Действие</th>
         </tr>
         @foreach (var item in Model)
         {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Author)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TotalPages)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Publisher)
-        </td>
-    </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPages)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                @Html.ActionLink("Изменить", "EditBook", new { id = item.Id }) / @Html.ActionLink("Списать книгу", "writeOffBook", new { id = item.Id })
+            </td>
+        </tr>
         }
     </table>
+
 </div>
 
 

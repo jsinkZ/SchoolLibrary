@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolLibrary3.Models;
 using SchoolLibrary3.Models.Entities;
@@ -21,6 +22,19 @@ namespace SchoolLibrary3.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationContext _appContext;
 
+        private Boolean IsSaveSuccessfull(String message4fail)
+        {
+            try
+            {
+                _appContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public HomeController(ILogger<HomeController> logger, UserManager<User> userManager, ApplicationContext appContext)
         {
             _logger = logger;
@@ -28,12 +42,13 @@ namespace SchoolLibrary3.Controllers
             _appContext = appContext;
         }
 
-        public IActionResult Index()
+        public ActionResult PrivacyAgreement(AgreementType type)
         {
-            return View();
+            if (type == AgreementType.GDPR) return View(new PrivacyViewModel(type));
+            else return PartialView(new PrivacyViewModel(type));
         }
 
-        public IActionResult Privacy()
+        public IActionResult Index()
         {
             return View();
         }
@@ -43,8 +58,6 @@ namespace SchoolLibrary3.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        
 
         [Authorize]
         public async Task<IActionResult> Private()
@@ -72,5 +85,105 @@ namespace SchoolLibrary3.Controllers
             List<Book> BookToList = _appContext.Books.ToList();
             return View(BookToList);
         }
-    }
+        [HttpGet, Authorize(Roles = "librarian")]
+        public async Task<ActionResult> EditBook(Guid? Id)
+        {
+            BookViewModel book = new BookViewModel();
+            Book ddd=await _appContext.Books.FindAsync(Id);
+            book.Author = ddd.Author;
+            book.Created = ddd.Created;
+            book.Description = ddd.Description;
+            book.Id = ddd.Id;
+            book.Publisher = ddd.Publisher;
+            book.TotalPages = ddd.TotalPages;
+            book.Name = ddd.Name;
+
+            book.Geners = new SelectList(_appContext.Genres, "Id","Name");
+            book.GenreId = ddd.GenreId;
+            book.Statuses = new SelectList(_appContext.Statuses, "bookId", "status");
+            book.StatusId = ddd.StatusId;
+
+
+
+            if (book == null) return RedirectToAction("NullReference", "Home");
+            if (Id != null) ViewBag.Title = "Редактирование книги";
+            else ViewBag.Title = "Добавление книги";
+            return View(book);
+        }
+
+        [HttpPost, Authorize(Roles = "librarian")]
+        public async Task<ActionResult> EditBook(BookViewModel book2, Guid GenreId, Guid StatusId)
+        {
+
+            Book book = new Book();
+
+            book.Author = book2.Author;
+            book.Created = book2.Created;
+            book.Description = book2.Description;
+            book.Id = book2.Id;
+            book.Publisher = book2.Publisher;
+            book.TotalPages = book2.TotalPages;
+            book.Name = book2.Name;
+            book.GenreId = GenreId;
+            book.StatusId = StatusId;
+
+            if (book == null)
+            {
+                return RedirectToAction("NullReference", "Home");
+            }
+
+            //Book findBook = await _appContext.Books.FindAsync(book.Id);
+            if (ModelState.IsValid)
+            {
+                book.Name = book.Name.Trim();
+                if (book.Id == Guid.Empty)
+                {
+                    book.Id = Guid.NewGuid();
+                    book.Created = DateTime.Now;
+                    _appContext.Books.Add(book);
+                }
+                else
+                {
+                    _appContext.Entry(book).State = EntityState.Modified;
+                }
+
+                if (IsSaveSuccessfull("При сохранении участника произошла ошибка") == false)
+                {
+                    ViewBag.Title = "Ошибка!";
+                    return View(book);
+                }
+            }
+            return RedirectToAction("Storage");
+        }
+
+        [HttpGet, Authorize(Roles = "librarian")]
+        public async Task<ActionResult> writeOffBook(Guid? Id)
+        {
+            Book book = await _appContext.Books.FindAsync(Id);
+            if (book == null) return RedirectToAction("NullReference", "Home");
+            if (Id != null) ViewBag.Title = "Редактирование книги";
+            else ViewBag.Title = "Добавление книги";
+            return View(book);
+        }
+
+        [HttpPost, Authorize(Roles = "librarian")]
+        public async Task<ActionResult> writeOffBook(Book book)
+        {
+            if (book == null)
+            {
+                return RedirectToAction("NullReference", "Home");
+            }
+
+            
+            _appContext.Entry(book).State = EntityState.Modified;
+                
+            if (IsSaveSuccessfull("При сохранении участника произошла ошибка") == false)
+            {
+                return RedirectToAction("Storage");
+            }
+
+            ViewBag.Title = "Ошибка!";
+            return View(book);
+        }
+        }
 }

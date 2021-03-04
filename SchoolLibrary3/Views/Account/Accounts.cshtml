@@ -3,6 +3,7 @@
     ViewBag.Title = "Список Пользователей";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<a asp-controller="Account" asp-action="Accounts">Список пользователей</a>
 <p class="rightAligned">@Html.ActionLink("Добавить Пользователя", "PreRegister")</p>
 <fieldset id="tableFS">
     <legend>@ViewBag.Title</legend>
@@ -20,29 +21,29 @@
             </tr>
             @foreach (var item in Model)
             {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailConfirmed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PatronymicName)
-            </td>
-            <td>
-                @Html.ActionLink("X", "DeleteAccount", new { id = item.Id })
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PatronymicName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("X", "DeleteAccount", new { id = item.Id })
+                    </td>
+                </tr>
             }
         </table>
     }

@@ -26,13 +26,13 @@ namespace SchoolLibrary3.Controllers
             _signInManager = signInManager;
             _appContext = context;
         }
-        [HttpGet] //, Authorize(Roles = "admin")]
+        [HttpGet, Authorize(Roles = "admin")]
         public IActionResult PreRegister(PreRegisterViewModel model)
         {
             model.Roles = _roleManager.Roles.ToList();
             return View(model);
         }
-        [HttpPost] //, Authorize(Roles = "admin")]
+        [HttpPost, Authorize(Roles = "admin")]
         public async Task<IActionResult> PreRegister(PreRegisterViewModel model, String RoleName)
         {
             model.Roles = _roleManager.Roles.ToList();
@@ -254,6 +254,36 @@ namespace SchoolLibrary3.Controllers
             return View(model);
         }
 
+        [HttpGet, AllowAnonymous]
+        public IActionResult ResetPassword(string code = null)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        [HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                return View("ResetPasswordConfirmation");
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return View("ResetPasswordConfirmation");
+            }
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
+
         [HttpGet, Authorize(Roles = "admin")]
         public ActionResult Accounts()
         {
@@ -281,5 +311,6 @@ namespace SchoolLibrary3.Controllers
             result = await _userManager.DeleteAsync(user); // Удаляем Пользователя
             return RedirectToAction("Accounts");
         }
+        
     }
 }

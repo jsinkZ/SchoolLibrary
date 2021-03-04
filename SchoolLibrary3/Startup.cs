@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +36,13 @@ namespace SchoolLibrary3
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;  // GDPR
+                options.MinimumSameSitePolicy = SameSiteMode.None;  // GDPR
+            });
+
             services.AddControllersWithViews();
         }
 
@@ -47,7 +55,7 @@ namespace SchoolLibrary3
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseCookiePolicy(); // GDPR
             app.UseAuthentication();    // подключение аутентификации
             app.UseAuthorization();
 
