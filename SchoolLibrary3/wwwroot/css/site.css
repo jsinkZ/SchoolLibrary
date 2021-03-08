@@ -8,9 +8,11 @@ a.navbar-brand {
 }
 
 /* Provide sufficient contrast against white background */
-a {
+/* Использование style.css 
+ a {
   color: #0366d6;
 }
+*/
 
 .btn-primary {
   color: #fff;
@@ -26,9 +28,11 @@ a {
 
 /* Sticky footer styles
 -------------------------------------------------- */
+/* Использование style.css 
 html {
   font-size: 14px;
 }
+*/
 @media (min-width: 768px) {
   html {
     font-size: 16px;
@@ -53,22 +57,27 @@ button.accept-policy {
 
 /* Sticky footer styles
 -------------------------------------------------- */
+/* Использование style.css 
 html {
   position: relative;
   min-height: 100%;
 }
-
+*/
+/* Использование style.css 
 body {
-  /* Margin bottom by footer height */
+  /* Margin bottom by footer height *//*
   margin-bottom: 60px;
 }
+*/
+/* Использование style.css 
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+  line-height: 60px; /* Vertically center the text there *//*
 }
+*/
 
 /* Наше рукоделие
 -------------------------------------------------- */

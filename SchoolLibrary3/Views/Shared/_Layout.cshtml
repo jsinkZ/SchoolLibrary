@@ -5,11 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Школьная Библиотека</title>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <link rel="shortcut icon" href="../wwwroot/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="shortcut icon" href="~/img/icons/favicon.ico" type="image/png">
+    <!--<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="~/css/normalize.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body>
+<body class="preload">
+    <div class="wrapper">
+        <script src="js/header.js"></script>
+        <header>
+            <div class="headerCol">
+                <div class="headerlogo">
+                    <a class="linkType1 logoTxt" asp-area="" asp-controller="Home" asp-action="Index">Школьная Библиотека</a>
+                </div>
+            </div>
+            <div class="headerCol">
+                <nav class="navHeader">
+                    <a class="linkType1 inlineNavHeader" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
+                    <!-- <a href="" class="linkType1 inlineNavHeader">Список книг</a> -->
+                </nav>
+            </div>
+            <div class="headerCol">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                <nav class="navHeader">
+                    <a class="linkType1" asp-area="" asp-controller="Home" asp-action="Private"> @User.Identity.Name </a>
+                    <form method="post" asp-controller="Account" asp-action="Logout">
+                        <button type="submit">Выход</button>
+                        <!--<input type="submit" value="Выход" class="linkType1" />-->
+                    </form>
+                </nav>
+                    }
+                    else
+                    {
+                        <a class="linkType1" asp-area="" asp-controller="Home" asp-action="Private"> Вход </a>
+                    }
+            </div>
+        </header>
+        <div class="content" role="main">
+            <partial name="_CookieConsentPartial" />
+                @RenderBody()
+        </div>
+        <footer>
+            <p class="copyr">&copy; 2021 - Школьная библиотека</p>
+        </footer>
+    </div>
+    <script src="js/load.js"></script>
+    <!--
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -41,6 +84,7 @@
             &copy; 2021 - Школьная библиотека
         </div>
     </footer>
+    -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
